@@ -31,15 +31,16 @@ print(matrix_B)
 sys1 = ct.StateSpace(A,B,C,D,0)
 G = ct.ss2tf(sys1)
 
-#print
-print("Transferfunction")
-print(G)
+#print("Transferfunction")
+#print(G)
 abee.poles_zeros(A, B, C, D)
 # Plot poles and zeros
 abee.poles_zeros(Ad, Bd, Cd, Dd)
-
+poles = ct.pzmap(sys1,False)
+print("The poles are")
+print(poles)
 # Get control gains
-ctl.set_system(Ad, Bd)
+ctl.set_system(Ad, Bd,Cd,Dd)
 K = ctl.get_closed_loop_gain()
 
 # Set the desired reference based on the dock position and zero velocity on docked position
