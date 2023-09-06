@@ -1,5 +1,6 @@
 #from msilib.schema import Control
 import numpy as np
+import control as ct
 
 from astrobee_1d import Astrobee
 from controller import Controller
@@ -19,14 +20,21 @@ abee.set_discrete_dynamics(Ad, Bd)
 
 # Matrix print
 matrix_A = '\n'.join([' '.join(map(str, row)) for row in Ad])
+print("A-Matrix")
 print(matrix_A)
 matrix_B = '\n'.join([' '.join(map(str, row)) for row in Bd])
+print("B-Matrix")
 print(matrix_B)
 
 #Transfer function print
-sys1 = ctl.StateSpace(Ad,Bd,Cd,Dd)
-G = ctl.TransferFunction(sys1)
+#control = Control()
+sys1 = ct.StateSpace(A,B,C,D,0)
+G = ct.ss2tf(sys1)
 
+#print
+print("Transferfunction")
+print(G)
+abee.poles_zeros(A, B, C, D)
 # Plot poles and zeros
 abee.poles_zeros(Ad, Bd, Cd, Dd)
 
