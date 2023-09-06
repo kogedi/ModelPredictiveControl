@@ -1,3 +1,4 @@
+#from msilib.schema import Control
 import numpy as np
 
 from astrobee_1d import Astrobee
@@ -10,10 +11,21 @@ ctl = Controller()
 
 # Get the system discrete-time dynamics
 A, B = abee.one_axis_ground_dynamics()
-
+C = np.array([[0, 0],[0, 0]])
+D = np.array([[0],[0]])
 # TODO: Get the discrete time system with casadi_c2d
-Ad, Bd, Cd, Dd = abee.casadi_c2d( )
+Ad, Bd, Cd, Dd = abee.casadi_c2d(A, B, C, D)
 abee.set_discrete_dynamics(Ad, Bd)
+
+# Matrix print
+matrix_A = '\n'.join([' '.join(map(str, row)) for row in Ad])
+print(matrix_A)
+matrix_B = '\n'.join([' '.join(map(str, row)) for row in Bd])
+print(matrix_B)
+
+#Transfer function print
+sys1 = ctl.StateSpace(Ad,Bd,Cd,Dd)
+G = ctl.TransferFunction(sys1)
 
 # Plot poles and zeros
 abee.poles_zeros(Ad, Bd, Cd, Dd)

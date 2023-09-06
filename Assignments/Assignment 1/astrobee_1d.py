@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+from argparse import Action
 
 import casadi as ca
 import numpy as np
@@ -44,10 +45,11 @@ class Astrobee(object):
         Helper function to populate Ac and Bc with continuous-time
         dynamics of the system.
         """
-
+        Ac = np.array([[0, 1],[0, 0]])
+        Bc = np.array([[0],[1/self.mass]])
         # Jacobian of exact discretization
-        Ac = ca.DM.zeros(2, 2)
-        Bc = ca.DM.zeros(2, 1)
+        #Ac = ca.DM.zeros(2, 2)
+        #Bc = ca.DM.zeros(2, 1)
 
         # TODO: Complete the entries of the matrices
         #       Ac and Bc. Note that the system mass
