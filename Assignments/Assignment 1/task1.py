@@ -18,32 +18,18 @@ D = np.array([[0],[0]])
 Ad, Bd, Cd, Dd = abee.casadi_c2d(A, B, C, D)
 abee.set_discrete_dynamics(Ad, Bd)
 
-## Matrix print
-#matrix_A = '\n'.join([' '.join(map(str, row)) for row in Ad])
-#print("A-Matrix")
-#print(matrix_A)
-#matrix_B = '\n'.join([' '.join(map(str, row)) for row in Bd])
-#print("B-Matrix")
-#print(matrix_B)
-
-#Transfer function print
-#control = Control()
-sys1 = ct.StateSpace(A,B,C,D,0)
-G = ct.ss2tf(sys1)
-
-#print("Transferfunction")
-#print(G)
 abee.poles_zeros(A, B, C, D)
 # Plot poles and zeros
 abee.poles_zeros(Ad, Bd, Cd, Dd)
+#StateSpace Formulation
+sys1 = ct.StateSpace(A,B,C,D,0)
 poles = ct.pzmap(sys1,False)
 print("The poles are ",poles[0])
 
 # Get control gains
 ctl.set_system(Ad, Bd,Cd,Dd)
-desired_poles1 = [0.975, 0.985]
-desired_poles2 = [0.974, 0.984]
-K = ctl.get_closed_loop_gain(desired_poles2)
+desired_poles = [0.974, 0.984]
+K = ctl.get_closed_loop_gain(desired_poles)
 
 # Set the desired reference based on the dock position and zero velocity on docked position
 dock_target = np.array([[0.0, 0.0]])
@@ -73,8 +59,6 @@ t, y, u = sim_env.run(x0)
 sim_env.visualize()
 
 # Activate feed-forward gain
-ki1=0.045
-ki2=0.028
-ctl.activate_integral_action(dt=0.1, ki=ki2)
+ctl.activate_integral_action(dt=0.1, ki=0.028)
 t, y, u = sim_env.run(x0)
 sim_env.visualize()
