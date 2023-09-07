@@ -18,13 +18,13 @@ D = np.array([[0],[0]])
 Ad, Bd, Cd, Dd = abee.casadi_c2d(A, B, C, D)
 abee.set_discrete_dynamics(Ad, Bd)
 
-# Matrix print
-matrix_A = '\n'.join([' '.join(map(str, row)) for row in Ad])
-print("A-Matrix")
-print(matrix_A)
-matrix_B = '\n'.join([' '.join(map(str, row)) for row in Bd])
-print("B-Matrix")
-print(matrix_B)
+## Matrix print
+#matrix_A = '\n'.join([' '.join(map(str, row)) for row in Ad])
+#print("A-Matrix")
+#print(matrix_A)
+#matrix_B = '\n'.join([' '.join(map(str, row)) for row in Bd])
+#print("B-Matrix")
+#print(matrix_B)
 
 #Transfer function print
 #control = Control()
@@ -37,11 +37,11 @@ abee.poles_zeros(A, B, C, D)
 # Plot poles and zeros
 abee.poles_zeros(Ad, Bd, Cd, Dd)
 poles = ct.pzmap(sys1,False)
-print("The poles are")
-print(poles)
+print("The poles are ",poles[0])
+
 # Get control gains
 ctl.set_system(Ad, Bd,Cd,Dd)
-K = ctl.get_closed_loop_gain()
+K = ctl.get_closed_loop_gain([0.5, 0.6])
 
 # Set the desired reference based on the dock position and zero velocity on docked position
 dock_target = np.array([[0.0, 0.0]]).T
