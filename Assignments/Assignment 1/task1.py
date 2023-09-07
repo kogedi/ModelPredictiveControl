@@ -50,6 +50,7 @@ ctl.set_reference(dock_target)
 
 # Starting position
 x0 = [1.0, 0.0]
+#print ("Was kommt hier raus: ", 0.01*(x0[0]-0))
 
 # Initialize simulation environment
 sim_env = EmbeddedSimEnvironment(model=abee,

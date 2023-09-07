@@ -113,7 +113,7 @@ class Controller(object):
                   Set dt with 'set_sampling_time' method.")
 
         # TODO: Complete the integral action update law. Done KD
-        self.i_term = self.i_term + (self.ref-x)
+        self.i_term = self.i_term + self.dt*(x[0]-self.ref)
 
     def reset_integral(self):
         """
@@ -157,7 +157,7 @@ class Controller(object):
         if self.use_integral is True:
             self.update_integral(x)
 
-        # TODO: Complete the control law Q4 done
-        u = -self.L @ (x-self.ref)
+        # TODO: Complete the control law Q4 done. Q5 law
+        u = -self.L @ (x) + self.Ki * self.i_term
         
         return u
