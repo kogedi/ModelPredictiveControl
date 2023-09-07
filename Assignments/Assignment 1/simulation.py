@@ -77,7 +77,7 @@ class EmbeddedSimEnvironment(object):
                 ax1.plot(t[l_wnd:], x_vec[0, l_wnd:], 'r--')
                 ax1.legend(["x1"])
                 ax1.set_ylabel("Position [m]")
-
+              
                 ax2.clear()
                 ax2.plot(t[l_wnd:], x_vec[1, l_wnd:], 'r--')
                 ax2.legend(["x2"])
@@ -120,16 +120,23 @@ class EmbeddedSimEnvironment(object):
         ax1.plot(t, x_vec[0, :], 'r--')
         ax1.legend(["x1"])
         ax1.set_ylabel("Position [m]")
+        ax1.set_yticks([1, 0.1, 0])
+        ax1.set_yticklabels(['1', '0.1', '0'])
+        ax1.grid(True)
 
         ax2.clear()
         ax2.plot(t, x_vec[1, :], 'r--')
         ax2.legend(["x2"])
         ax2.set_ylabel("Velocity [m/s]")
+        ax2.grid(True)
 
         ax3.clear()
         ax3.plot(t[:-1], u_vec, 'r--')
         ax3.legend(["u"])
         ax3.set_ylabel("Force input [n]")
+        ax3.set_yticks([-0.85, -0.5, 0, 0.2])
+        ax3.set_yticklabels(['-0.85',  '-0.5', '0', '0.2'])
+        ax3.grid(True)
 
         plt.show()
 

@@ -41,7 +41,8 @@ print("The poles are ",poles[0])
 
 # Get control gains
 ctl.set_system(Ad, Bd,Cd,Dd)
-K = ctl.get_closed_loop_gain([0.5, 0.6])
+desired_poles = [0.975, 0.985]
+K = ctl.get_closed_loop_gain(desired_poles)
 
 # Set the desired reference based on the dock position and zero velocity on docked position
 dock_target = np.array([[0.0, 0.0]]).T
