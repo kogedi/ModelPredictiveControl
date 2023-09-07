@@ -41,8 +41,9 @@ print("The poles are ",poles[0])
 
 # Get control gains
 ctl.set_system(Ad, Bd,Cd,Dd)
-desired_poles = [0.975, 0.985]
-K = ctl.get_closed_loop_gain(desired_poles)
+desired_poles1 = [0.975, 0.985]
+desired_poles2 = [0.978, 0.987]
+K = ctl.get_closed_loop_gain(desired_poles2)
 
 # Set the desired reference based on the dock position and zero velocity on docked position
 dock_target = np.array([[0.0, 0.0]]).T
@@ -62,14 +63,18 @@ sim_env.visualize()
 
 # Disturbance effect
 abee.set_disturbance()
+time1=40
+time2=100
 sim_env = EmbeddedSimEnvironment(model=abee,
                                  dynamics=abee.linearized_discrete_dynamics,
                                  controller=ctl.control_law,
-                                 time=40.0)
+                                 time=time1)
 t, y, u = sim_env.run(x0)
 sim_env.visualize()
 
 # Activate feed-forward gain
-ctl.activate_integral_action(dt=0.1, ki=0.045)
+ki1=0.045
+ki2=0.04
+ctl.activate_integral_action(dt=0.1, ki=ki2)
 t, y, u = sim_env.run(x0)
 sim_env.visualize()
