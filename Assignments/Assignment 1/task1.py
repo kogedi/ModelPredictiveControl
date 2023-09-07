@@ -42,11 +42,11 @@ print("The poles are ",poles[0])
 # Get control gains
 ctl.set_system(Ad, Bd,Cd,Dd)
 desired_poles1 = [0.975, 0.985]
-desired_poles2 = [0.978, 0.987]
+desired_poles2 = [0.974, 0.984]
 K = ctl.get_closed_loop_gain(desired_poles2)
 
 # Set the desired reference based on the dock position and zero velocity on docked position
-dock_target = np.array([[0.0, 0.0]]).T
+dock_target = np.array([[0.0, 0.0]])
 ctl.set_reference(dock_target)
 
 # Starting position
@@ -74,7 +74,7 @@ sim_env.visualize()
 
 # Activate feed-forward gain
 ki1=0.045
-ki2=0.04
+ki2=0.028
 ctl.activate_integral_action(dt=0.1, ki=ki2)
 t, y, u = sim_env.run(x0)
 sim_env.visualize()
