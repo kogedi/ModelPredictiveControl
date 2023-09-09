@@ -1,5 +1,6 @@
 import casadi as ca
 import numpy as np
+import numpy.linalg as LA
 import matplotlib.pyplot as plt
 
 # Numpy operations
@@ -17,18 +18,43 @@ A = np.zeros((9, 9))
 #                       [0, 1, 0, 1, 0]
 #                       [0, 0, 0, 0, 0]
 
-# Q2: Take now
-A = np.eye(3) * 10
-b = np.linspace(1, 3, 3)
-# Calculate and print
-# i) A b
-# ii) b^T A b
-# iii) A^{-1} b
-# iv) || b || (norm-2)
+
+A[1:9:2, 1:9:2]=1
+print("A is ")
+#print(A)
+
+# # Q2: Take now
+# A = np.eye(3) * 10
+# b = np.linspace(1, 3, 3)
+# # Calculate and print
+# # i) A b
+# print("A @ b")
+# print(A @ b)
+# # ii) b^T A b
+# print("b^T A b")
+# print(np.transpose(b) @ A @ b)
+# print("b.T @ A @ b")
+# print(b.T @ A @ b)
+# # iii) A^{-1} b
+# print("LA.inv(A) @ b")
+# print(LA.inv(A) @ b)
+# # iv) || b || (norm-2)
+# print("np.linalg.norm(b)")
+# print(LA.norm(b))
+# print("np.linalg.norm(b, 1)")
+# print(LA.norm(b, 1)) #Fromöbius for None
+# print("np.linalg.norm(b, 2)")
+# print(LA.norm(b, 2)) #Fromöbius for None
 
 
 # Q3: With np.linspace or np.arange and np.sin, plot a sine function
-#     using plt.plot(x, y) and plt.show()
+ # using plt.plot(x, y) and plt.show()
+# x = np.arange(1, 100, 1)
+# # print("x ",x)
+# y = np.sin(x)
+# # print("y ",y)
+# plt.plot(x,y)
+# plt.show()
 
 
 # Q4: Take now a random array such as
