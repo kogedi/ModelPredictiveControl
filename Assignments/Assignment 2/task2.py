@@ -46,7 +46,7 @@ sim_env.visualize_error()
 # sim_env.visualize_state_vs_reference(state=y, ref=x_full_ref, control=u_star)
 
 # Activate broken thruster and re-run
-sim_env.broken_thruster()
+sim_env.broken_thruster(True)
 t, y, u = sim_env.run(x0, x_ref=x_full_ref)
 sim_env.visualize_error()
 
