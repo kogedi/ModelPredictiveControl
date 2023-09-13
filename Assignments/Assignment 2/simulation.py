@@ -242,6 +242,7 @@ class EmbeddedSimEnvironment(object):
             ax1.set_title("Trajectory Error and Control Effort")
             ax1.plot(t, e_vec[0, :], 'r--')
             ax1.plot(t, e_vec[1, :], 'g--')
+            ax1.grid()
             if x_pred is not None:
                 x_np = np.asarray(x_pred).reshape(self.x_vec.shape)
                 ax1.plot(t, x_np[0, :], 'r')
@@ -255,7 +256,8 @@ class EmbeddedSimEnvironment(object):
             ax2.plot(t, e_vec[2, :], 'r--')
             ax2.legend(["x5", "x6"])
             ax2.set_ylabel("Attitude [rad]")
-
+            ax2.grid()
+            
             ax3.clear()
             ax3.plot(t[:-1], u_vec[0, :], 'r--')
             ax3.plot(t[:-1], u_vec[1, :], 'g--')
@@ -263,6 +265,7 @@ class EmbeddedSimEnvironment(object):
             ax3.legend(["u1", "u2", "u3"])
             ax3.set_ylabel("Force input [n] / Torque [nm]")
             ax3.set_xlabel("Time [s]")
+            ax3.grid()
         else:
             ax1.clear()
             ax1.set_title("Trajectory Error and Control Effort")

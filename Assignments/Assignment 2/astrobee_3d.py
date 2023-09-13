@@ -29,7 +29,7 @@ class Astrobee(object):
         self.m = None
         self.dt = h
 
-        # Model prperties
+        # Model properties
         self.mass = mass + mass_ac
         self.inertia = inertia
 

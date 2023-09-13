@@ -14,7 +14,6 @@ bumble.set_discrete_dynamics(Ad, Bd)
 
 print(Ad)
 print(Bd)
-
 # Get controller
 R = np.eye(3) * 10
 
