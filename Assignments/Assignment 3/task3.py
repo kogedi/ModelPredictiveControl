@@ -32,8 +32,8 @@ abee.set_discrete_dynamics(Ad, Bd)
 # TODO: Check eigenvalues, and verify that for each left eigenvector v of Ad
 #       corresponding to an eigenvalue not inside the unit circle, v @ Bd != 0
 E, V = np.linalg.eig(Ad.T)
-print(E)
-print(V.T @ Bd)
+print("E",E)
+print("v.T@B", V.T @ Bd)
 
 R_coefficients = np.ones(6)
 Q_coefficients = np.ones(12)
