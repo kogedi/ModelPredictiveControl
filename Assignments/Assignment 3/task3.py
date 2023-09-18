@@ -35,7 +35,7 @@ E, V = np.linalg.eig(Ad.T)
 print(E)
 print(V.T @ Bd)
 
-R_coefficients = 10*np.ones(6)
+R_coefficients = np.ones(6)
 Q_coefficients = np.ones(12)
 
 Q_coefficients[3:6] = Q_coefficients[3:6] + 100
