@@ -36,11 +36,7 @@ E, V = np.linalg.eig(Ad.T)
 #print("v.T@B", V.T @ Bd)
 
 R_coefficients = np.ones(6)
-<<<<<<< HEAD:Assignments/Assignment 3/task3.py
-Q_coefficients = np.ones(12)
-=======
 Q_coefficients = 1*np.ones(12)
->>>>>>> f29776ae5e5e4ec1b9b785599e0c512202cedde4:Assignments/Assignment 3/task3_KD.py
 
 Q_coefficients[0:3] = 1/0.06**2
 Q_coefficients[0] = 1.2 * Q_coefficients[0]
@@ -49,31 +45,6 @@ Q_coefficients[6:9] = 1/(10**(-7))
 R_coefficients[0:3] = 1/0.85**2
 R_coefficients[3:] = 1/0.04**2
 
-<<<<<<< HEAD:Assignments/Assignment 3/task3.py
-# Using Bryson's Rule
-R_coefficients[0:3] = 35*1/0.85**2 
-R_coefficients[3:] = 2*1/0.04**2
-
-Q_coefficients[0:3] = 1/0.06**2
-Q_coefficients[3:6] = 1/0.03**2
-Q_coefficients[6:9] = 3/(1.5*10**(-3))
-
-R_coefficients = 10*R_coefficients
-Q_coefficients = 1.5*Q_coefficients
-
-print("Q matrix")
-print(Q_coefficients)
-#rint("R matrix")
-#print(R_coefficients)
-
-# TODO: uncomment the code below to adjust the coefficients of Q and R
-# Q_coefficients[0:3] = 0
-# Q_coefficients[3:6] = 0
-# Q_coefficients[6:9] = 0
-# Q_coefficients[9:12] = 0
-# R_coefficients[0:3] = 0
-# R_coefficients[3:6] = 0
-=======
 #print("Q_coefficients",Q_coefficients)
 print("R_coefficients",R_coefficients)
 
@@ -86,7 +57,6 @@ R_coefficients[5] = 50000 * R_coefficients[5]
 
 #print("Q_coefficients",Q_coefficients)
 print("R_coefficients",R_coefficients)
->>>>>>> f29776ae5e5e4ec1b9b785599e0c512202cedde4:Assignments/Assignment 3/task3_KD.py
 
 Q = np.diag(Q_coefficients)
 R = np.diag(R_coefficients)
