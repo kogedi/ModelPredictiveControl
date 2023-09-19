@@ -94,6 +94,9 @@ class EmbeddedSimEnvironment(object):
                  t[l_wnd:], x_vec[2, l_wnd:], 'g--',)
         ax1.legend(["x1", "x2", "x3"])
         ax1.set_ylabel("Position [m]")
+        #ax1.set_yticks([0.1, 0.5, 1])
+        #ax1.set_yticklabels([0.1, 0.5, 1])
+        ax1.grid(True)
 
         ax2.clear()
         ax2.plot(t[l_wnd:], x_vec[3, l_wnd:], 'r--',

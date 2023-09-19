@@ -32,21 +32,31 @@ abee.set_discrete_dynamics(Ad, Bd)
 # TODO: Check eigenvalues, and verify that for each left eigenvector v of Ad
 #       corresponding to an eigenvalue not inside the unit circle, v @ Bd != 0
 E, V = np.linalg.eig(Ad.T)
-print("E",E)
-print("v.T@B", V.T @ Bd)
+#print("E",E)
+#print("v.T@B", V.T @ Bd)
 
 R_coefficients = np.ones(6)
-Q_coefficients = 100*np.ones(12)
+Q_coefficients = 1*np.ones(12)
 
+Q_coefficients[0:3] = 1/0.06**2
+Q_coefficients[0] = 1.2 * Q_coefficients[0]
+Q_coefficients[3:6] = 1/0.03**2
+Q_coefficients[6:9] = 1/(10**(-7))
+R_coefficients[0:3] = 1/0.85**2
+R_coefficients[3:] = 1/0.04**2
 
-print(Q_coefficients)
-# TODO: uncomment the code below to adjust the coefficients of Q and R
-# Q_coefficients[0:3] = 0
-# Q_coefficients[3:6] = 0
-# Q_coefficients[6:9] = 0
-# Q_coefficients[9:12] = 0
-# R_coefficients[0:3] = 0
-# R_coefficients[3:6] = 0
+#print("Q_coefficients",Q_coefficients)
+print("R_coefficients",R_coefficients)
+
+R_coefficients[0] = 500 * R_coefficients[0]
+R_coefficients[1] = 60 * R_coefficients[1]
+R_coefficients[2] = 10 * R_coefficients[2]
+R_coefficients[3] = 55000 * R_coefficients[3]
+R_coefficients[4] = 52000 * R_coefficients[4]
+R_coefficients[5] = 50000 * R_coefficients[5]
+
+#print("Q_coefficients",Q_coefficients)
+print("R_coefficients",R_coefficients)
 
 Q = np.diag(Q_coefficients)
 R = np.diag(R_coefficients)
