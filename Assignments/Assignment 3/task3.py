@@ -32,14 +32,29 @@ abee.set_discrete_dynamics(Ad, Bd)
 # TODO: Check eigenvalues, and verify that for each left eigenvector v of Ad
 #       corresponding to an eigenvalue not inside the unit circle, v @ Bd != 0
 E, V = np.linalg.eig(Ad.T)
-print("E",E)
-print("v.T@B", V.T @ Bd)
+#print("E",E)
+#print("v.T@B", V.T @ Bd)
 
 R_coefficients = np.ones(6)
-Q_coefficients = 100*np.ones(12)
+Q_coefficients = np.ones(12)
 
 
+# Using Bryson's Rule
+R_coefficients[0:3] = 35*1/0.85**2 
+R_coefficients[3:] = 2*1/0.04**2
+
+Q_coefficients[0:3] = 1/0.06**2
+Q_coefficients[3:6] = 1/0.03**2
+Q_coefficients[6:9] = 3/(1.5*10**(-3))
+
+R_coefficients = 10*R_coefficients
+Q_coefficients = 1.5*Q_coefficients
+
+print("Q matrix")
 print(Q_coefficients)
+#rint("R matrix")
+#print(R_coefficients)
+
 # TODO: uncomment the code below to adjust the coefficients of Q and R
 # Q_coefficients[0:3] = 0
 # Q_coefficients[3:6] = 0
