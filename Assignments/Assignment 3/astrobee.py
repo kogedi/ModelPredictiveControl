@@ -255,4 +255,4 @@ class Astrobee(object):
         self.kf_estimator.x = x
 
         # TODO: Uncomment the line below for process noise
-        # self.kf_activated = True
+        self.kf_activated = True

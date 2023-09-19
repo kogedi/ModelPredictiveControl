@@ -92,8 +92,10 @@ C = np.hstack((C, np.zeros((3, 3))))
 
 # Create the matrices for Qn and Rn
 # TODO: adjust the values of Qn and Rn to answer Q4 and Q5 - they start at 0
-Q_diag = np.vstack((np.ones((3, 1)) * 0, np.zeros((3, 1))))
-R_diag = np.vstack((np.ones((3, 1)) * 0))
+Q_diag = np.vstack((np.ones((3, 1)) * 1, np.zeros((3, 1))))
+print("Q_diag",Q_diag)
+R_diag = np.vstack((np.ones((3, 1)) * 1))
+print("R_diag",R_diag)
 Qn = np.diag(Q_diag.reshape(6, ))
 Rn = np.diag(R_diag.reshape(3, ))
 

@@ -58,7 +58,7 @@ class EmbeddedSimEnvironment(object):
                 x = x_vec[:, -1].reshape(12, 1)
 
                 # Get measurement
-                measurement_noise = np.random.uniform(-0.005, 0.005, (3, 1))
+                measurement_noise = np.random.uniform(-1, 1, (3, 1))#(-0.005, 0.005, (3, 1))#
                 y = self.model.C_KF @ x[0:6, :].reshape(6, 1) + measurement_noise
 
                 # Estimate the velocity from noisy position measurements
