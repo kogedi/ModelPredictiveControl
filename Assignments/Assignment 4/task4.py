@@ -8,7 +8,7 @@ from simulation import EmbeddedSimEnvironment
 from set_operations import SetOperations
 
 SET_TYPE = "LQR"  # Terminal invariant set type: select 'zero' or 'LQR'
-CASE_SELECTION = "simulate"  # Select either "attitude", "translation", "simulate"
+CASE_SELECTION = "translation"  # Select either "attitude", "translation", "simulate"
 
 # Create pendulum and controller objects
 abee = Astrobee()
@@ -50,12 +50,12 @@ set_ops_a = SetOperations(Aa, Ba, Qa, Ra, xlb=-x_lim_a, xub=x_lim_a)
 # TODO: For Q1, change N=10 to the different values of N and inv_set_type to "LQR" or "zero"
 if CASE_SELECTION == "translation":
     # Q1
-    KN_XN, all_sets, _ = set_ops_t.getNstepControllableSet(uub=u_lim_t, ulb=-u_lim_t, N=10, inv_set_type=SET_TYPE)
+    KN_XN, all_sets, _ = set_ops_t.getNstepControllableSet(uub=u_lim_t, ulb=-u_lim_t, N=5, inv_set_type=SET_TYPE)
     set_ops_t.plotNsets(all_sets, plot_type=CASE_SELECTION)
 
     # Q2
     kns_u, _, _ = set_ops_t.getNstepControllableSet(uub=u_lim_t, ulb=-u_lim_t, N=5, inv_set_type=SET_TYPE)
-    kns_3u, _, _ = set_ops_t.getNstepControllableSet(uub=3 * u_lim_t, ulb=-3 * u_lim_t, N=5, inv_set_type=SET_TYPE)
+    kns_3u, _, _ = set_ops_t.getNstepControllableSet(uub=1.5 * u_lim_t, ulb=-1.5 * u_lim_t, N=5, inv_set_type=SET_TYPE)
     sets = {'|u|': kns_u, '3 |u|': kns_3u}
     set_ops_t.plotNsets(sets, plotU=True, plot_type=CASE_SELECTION)
     exit()
