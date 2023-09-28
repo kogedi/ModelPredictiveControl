@@ -71,7 +71,9 @@ class MPC(object):
             R = np.eye(self.Nu) * 0.01
 
         self.Q = ca.MX(Q)
+        print("Q", self.Q)
         self.P = ca.MX(P)
+        print("P is", self.P)
         self.R = ca.MX(R)
 
         if xub is None:
@@ -235,7 +237,7 @@ class MPC(object):
         self.optvar_init = self.opt_var(0)
         self.optvar_init['x', 0] = self.optvar_x0[0]
 
-        print('\nSolving MPC with %d step horizon' % self.Nt)
+        #print('\nSolving MPC with %d step horizon' % self.Nt)
         solve_time = -time.time()
 
         param = ca.vertcat(x0, self.x_sp, u0)
@@ -252,8 +254,8 @@ class MPC(object):
         optvar = self.opt_var(sol['x'])
 
         solve_time += time.time()
-        print('\nMPC took %f seconds to solve.' % (solve_time))
-        print('MPC cost: ', sol['f'])
+        #print('\nMPC took %f seconds to solve.' % (solve_time))
+        #print('MPC cost: ', sol['f'])
         if status == "Infeasible_Problem_Detected":
             print("Infeasible_Problem_Detected")
             exit()

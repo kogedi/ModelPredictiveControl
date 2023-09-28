@@ -8,7 +8,7 @@ from simulation import EmbeddedSimEnvironment
 from set_operations import SetOperations
 
 SET_TYPE = "LQR"  # Terminal invariant set type: select 'zero' or 'LQR'
-CASE_SELECTION = "translation"  # Select either "attitude", "translation", "simulate"
+CASE_SELECTION = "simulate"  # Select either "attitude", "translation", "simulate"
 
 # Create pendulum and controller objects
 abee = Astrobee()
@@ -17,7 +17,7 @@ abee = Astrobee()
 A, B, _, _ = abee.create_discrete_time_dynamics()
 
 # Solve the ARE for our system to extract the terminal weight matrix P
-#Q = np.eye(12)
+Q = np.eye(12)
 
 #Q_diag = np.vstack((np.ones((3, 1)),np.ones((3, 1)) * 100, np.ones((3, 1)),np.ones((3, 1))*100))
 
