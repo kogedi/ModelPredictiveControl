@@ -143,9 +143,31 @@ class Astrobee(object):
         """
 
         x_r = np.zeros((self.n, npoints))
-
+        
+        #Initialization
+        
+        
+        x_r[0:3, 0] = x_s[0:3,0] #+ r_mat_q_np(x_s[6:10,0])[:,0] * radius
+        x_r[3:6, 0] = x_s[3:6,0] 
+        x_r[6:10,0] = x_s[6:10,0]
+        #print("r_mat_q_np(x_s[6:10,0])[:,0] * radius",r_mat_q_np(x_s[6:10,0])[:,0] * radius)
+        x_r[10:, 0] = x_s[10:,0]
+        p_temp =  np.zeros((3, npoints))
+        
         # TODO: do the forward propagation of the measured state x_s for npoints.
-
+        for i in range(1,npoints):
+            x_r[0:3, i] = x_r[0:3, i] + x_s[3:6,0] * self.dt 
+            x_r[3:6, i] = x_s[3:6,0] 
+            x_r[6:10, i] =  np.linalg.norm(x_r[6:10,i-1] + (1/2 * np.dot(xi_mat_np(x_r[6:10,i-1]), x_s[10:,0])), 2)
+            x_r[10:, i] = x_s[10:,0]
+        
+        for i in range(npoints):
+            p_temp[0:3,i] = x_r[0:3, i] + r_mat_q_np(x_r[6:10,i])[:,0] * radius
+            x_r[0:3, i] = p_temp[:,i]
+            
+            
+       
+        print(x_r)
         return x_r
 
     def get_trajectory(self, t, npoints, forward_propagation=False):

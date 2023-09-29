@@ -322,7 +322,7 @@ class MPC(object):
         optvar = self.opt_var(sol['x'])
 
         solve_time += time.time()
-        print('MPC - CPU time: %f seconds  |  Cost: %f  |  Horizon length: %d ' % (solve_time, sol['f'], self.Nt))
+        #print('MPC - CPU time: %f seconds  |  Cost: %f  |  Horizon length: %d ' % (solve_time, sol['f'], self.Nt))
 
         return optvar['x'], optvar['u']
 
@@ -359,8 +359,7 @@ class MPC(object):
         :rtype: [type]
         """
         x_traj = self.model.forward_propagate(xh, self.Nt + 1, radius=0.5)
-        #x_sp = x_traj.reshape(self.Nx * (self.Nt + 1), order='F')
-        x_sp = abee.get_trajectory(t, 80*0.1, forward_propagation=False)
+        x_sp = x_traj.reshape(self.Nx * (self.Nt + 1), order='F')
         self.set_reference(x_sp)
         _, u_pred = self.solve_mpc(x0)
 
