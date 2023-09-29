@@ -4,14 +4,19 @@ from astrobee import Astrobee
 from mpc import MPC
 from simulation import EmbeddedSimEnvironment
 
+import getpass
 
-# TODO: Set the path to the trajectory file:
-#       eg.: trajectory_quat = '/home/roque/Project Assignment/Dataset/trajectory_quat.txt'
-trajectory_quat = 'C:/Users/Konrad Dittrich/git/repos/Model_Predictive_Control/Assignments/Project Assignment/Dataset/trajectory_quat.txt'
+# Get the username of the currently logged-in user
+username = getpass.getuser()
 
-# TODO: complete the 'tuning_file_path' variable to the path of your tuning.yaml
-#       eg.: tuning_file_path = '/home/roque/Project Assignment/tuning.yaml'
-tuning_file_path = 'C:/Users/Konrad Dittrich/git/repos/Model_Predictive_Control/Assignments/Project Assignment/tuning.yaml'
+print("Username:", username)
+#Set the path to the trajectory file:
+#complete the 'tuning_file_path' variable to the path of your tuning.yaml
+
+if username == 'Konrad Dittrich':
+    trajectory_quat = 'C:/Users/Konrad Dittrich/git/repos/Model_Predictive_Control/Assignments/Project Assignment/Dataset/trajectory_quat.txt'
+    tuning_file_path = 'C:/Users/Konrad Dittrich/git/repos/Model_Predictive_Control/Assignments/Project Assignment/tuning.yaml'
+
 
 # Q1
 # TODO: Set the Astrobee dynamics in Astrobee->astrobee_dynamics_quat
