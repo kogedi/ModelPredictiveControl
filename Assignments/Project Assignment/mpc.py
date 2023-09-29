@@ -89,7 +89,8 @@ class MPC(object):
         x0 = ca.MX.sym('x0', self.Nx)
         if self.trajectory_tracking:
             # TODO: remove 'raise NotImplementedError' and create the desired symbolic param
-            raise NotImplementedError
+            #raise NotImplementedError
+            x_ref = ca.MX.sym('x_ref', self.Nx*(self.Nx + 1))
         else:
             x_ref = ca.MX.sym('x_ref', self.Nx,)
         u0 = ca.MX.sym('u0', self.Nu)
@@ -121,7 +122,7 @@ class MPC(object):
             x_t = opt_var['x', t]
             if self.trajectory_tracking:
                 # TODO: remove 'raise NotImplementedError' and obtain the desired step in the reference trajectory
-                raise NotImplementedError
+                x_r = opt_var['x_ref',t]
             else:
                 x_r = x_ref
             u_t = opt_var['u', t]

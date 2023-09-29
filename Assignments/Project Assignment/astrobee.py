@@ -80,11 +80,22 @@ class Astrobee(object):
         # 3D Torque
         tau = u[3:]
 
-        # Model
+        # Model setup
         pdot = ca.MX.zeros(3, 1)
         vdot = ca.MX.zeros(3, 1)
         qdot = ca.MX.zeros(4, 1)
         wdot = ca.MX.zeros(3, 1)
+        
+        #Help variables
+        R_q = r_mat_q(q)
+        Omega_q = xi_mat(q)
+        J = self.inertia
+        
+        #Newton-Euler equations  (1)
+        pdot = v                                                              #(1a)
+        vdot = 1/self.mass * ca.mtimes(R_q, f)                                #(1b)
+        qdot = 1/2 * ca.mtimes(Omega_q, w)                                    #(1c)
+        wdot = ca.mtimes(ca.inv(J), (tau - ca.cross(( w),(ca.mtimes(J,w)))))  #(1d)
 
         dxdt = [pdot, vdot, qdot, wdot]
 
@@ -119,7 +130,7 @@ class Astrobee(object):
     def forward_propagate(self, x_s, npoints, radius=0.5):
         """
         Forward propagate the observed state given a constant velocity.
-
+                    
         The output should be a self.n x npoints matrix, with the
         desired offset track.
 
@@ -216,7 +227,7 @@ class Astrobee(object):
         xd = np.array([11.5, 0.54, 0.4, 0.0, 0.1, 0.0, 0.11971121, 0.0, 0.0, 0.99280876, 0.1, 0.0, 0.0])
         eps = np.linalg.norm(x_r[:, 24] - xd)
         if eps > 1e-2:
-            print("Forward propagation has a large error. Double check your dynamics.")
+            print("test_forwardpropagation: Forward propagation has a large error. Double check your dynamics.")
             exit()
 
     def test_dynamics(self):
@@ -232,5 +243,5 @@ class Astrobee(object):
         xt = self.model(x0, u0)
         eps = np.linalg.norm(np.array(xt) - xd)
         if eps > 1e-4:
-            print("Forward propagation has a large error. Double check your dynamics.")
+            print("test_dynamics: Forward propagation has a large error. Double check your dynamics.")
             exit()

@@ -108,7 +108,7 @@ def r_mat_q_np(q):
     :param q: unit quaternion
     :type q: ca.MX
     :return: rotation matrix, SO(3)
-    :rtype: ca.MX
+    :rtype: ca.MX as a numpy array
     """
 
     Rmat = np.zeros((3, 3))
@@ -173,10 +173,10 @@ def inv_skew_np(sk):
 def xi_mat_np(q):
     """
     Generate the matrix for quaternion dynamics Xi,
-    from Trawney's Quaternion tutorial.
+    from Trawney's Quaternion tutorial. 
     :param q: unit quaternion
     :type q: ca.MX
-    :return: Xi matrix
+    :return: Xi matrix as Numpy array
     :rtype: ca.MX
     """
     Xi = np.zeros((4, 3))
