@@ -90,7 +90,8 @@ class MPC(object):
         if self.trajectory_tracking:
             # TODO: remove 'raise NotImplementedError' and create the desired symbolic param
             #raise NotImplementedError
-            x_ref = ca.MX.sym('x_ref', self.Nx*(self.Nx + 1))
+            x_ref = ca.MX.sym('x_ref', self.Nx*(self.Nt + 1))
+            
         else:
             x_ref = ca.MX.sym('x_ref', self.Nx,)
         u0 = ca.MX.sym('u0', self.Nu)
@@ -122,7 +123,7 @@ class MPC(object):
             x_t = opt_var['x', t]
             if self.trajectory_tracking:
                 # TODO: remove 'raise NotImplementedError' and obtain the desired step in the reference trajectory
-                x_r = opt_var['x_ref',t]
+                x_r = x_ref[t*self.Nx:(t+1)*self.Nx]
             else:
                 x_r = x_ref
             u_t = opt_var['u', t]
@@ -358,7 +359,8 @@ class MPC(object):
         :rtype: [type]
         """
         x_traj = self.model.forward_propagate(xh, self.Nt + 1, radius=0.5)
-        x_sp = x_traj.reshape(self.Nx * (self.Nt + 1), order='F')
+        #x_sp = x_traj.reshape(self.Nx * (self.Nt + 1), order='F')
+        x_sp = abee.get_trajectory(t, 80*0.1, forward_propagation=False)
         self.set_reference(x_sp)
         _, u_pred = self.solve_mpc(x0)
 

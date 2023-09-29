@@ -44,7 +44,7 @@ ctl = MPC(model=abee,
 # x_d = abee.get_static_setpoint()
 # ctl.set_reference(x_d)
 # # Set initial state
-# x0 = abee.get_initial_pose()
+x0 = abee.get_initial_pose()
 # sim_env = EmbeddedSimEnvironment(model=abee,
 #                                  dynamics=abee.model,
 #                                  controller=ctl.mpc_controller,
@@ -67,8 +67,8 @@ sim_env_tracking = EmbeddedSimEnvironment(model=abee,
                                           controller=tracking_ctl.mpc_controller,
                                           time=80)
 t, y, u = sim_env_tracking.run(x0)
-x_d_track = abee.get_trajectory(self, t, 80*0.1, forward_propagation=False)
-tracking_ctl.set_reference(x_d_track)
+
+#tracking_ctl.set_reference(x_d_track)
 sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
 
