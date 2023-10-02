@@ -65,6 +65,11 @@ class MPC(object):
         print("Horizon steps: ", N * self.dt)
         self.dynamics = dynamics
 
+        #Define attributes for computing the mean and maximum solver time
+        self.max_ct = 0 
+        self.solve_times = 0 
+        self.number_of_iterations = 0 
+
         # Initialize variables
         self.set_cost_functions_quat()
         self.x_sp = None
@@ -322,6 +327,11 @@ class MPC(object):
         optvar = self.opt_var(sol['x'])
 
         solve_time += time.time()
+        self.solve_times += solve_time
+        if solve_time > self.max_ct: 
+            self.max_ct = solve_time
+        self.number_of_iterations += 1
+
         print('MPC - CPU time: %f seconds  |  Cost: %f  |  Horizon length: %d ' % (solve_time, sol['f'], self.Nt))
 
         return optvar['x'], optvar['u']
@@ -420,3 +430,12 @@ class MPC(object):
         based of current state and velocity measurements.
         """
         self.fw_propagating = True
+
+    def get_max_solvetime(self):
+        return self.max_ct
+    
+    def get_avg_solvetime(self):
+        if self.number_of_iterations == 0:
+            return "error"
+        else:
+            return self.solve_times / self.number_of_iterations

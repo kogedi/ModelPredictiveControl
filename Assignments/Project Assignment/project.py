@@ -16,7 +16,9 @@ print("Username:", username)
 if username == 'Konrad Dittrich':
     trajectory_quat = 'C:/Users/Konrad Dittrich/git/repos/Model_Predictive_Control/Assignments/Project Assignment/Dataset/trajectory_quat.txt'
     tuning_file_path = 'C:/Users/Konrad Dittrich/git/repos/Model_Predictive_Control/Assignments/Project Assignment/tuning.yaml'
-
+elif username == 'catherine':
+    trajectory_quat = '/Users/catherine/git/Model_Predictive_Control/Assignments/Project Assignment/Dataset/trajectory_quat.txt'
+    tuning_file_path = '/Users/catherine/git/Model_Predictive_Control/Assignments/Project Assignment/tuning.yaml'
 
 # Q1
 # TODO: Set the Astrobee dynamics in Astrobee->astrobee_dynamics_quat
@@ -72,10 +74,19 @@ t, y, u = sim_env_tracking.run(x0)
 sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
 
+#Print maximum and average solvetime
+max_ct = tracking_ctl.get_max_solvetime()
+avg_ct = tracking_ctl.get_avg_solvetime()
+
+
+print("Average cpu time to solve =" ,avg_ct)
+print("Maximum cpu time to solve =", max_ct)
 # Test 3: Activate forward propagation
 # TODO: complete the MPC Astrobee class to be ready for forward propagation
 abee.test_forward_propagation()
 tracking_ctl.set_forward_propagation()
+
 t, y, u = sim_env_tracking.run(x0)
 # sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
+
