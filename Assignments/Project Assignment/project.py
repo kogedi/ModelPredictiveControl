@@ -9,7 +9,7 @@ import getpass
 # Get the username of the currently logged-in user
 username = getpass.getuser()
 
-print("Username:", username)
+#print("Username:", username)
 #Set the path to the trajectory file:
 #complete the 'tuning_file_path' variable to the path of your tuning.yaml
 
@@ -33,13 +33,13 @@ u_lim, x_lim = abee.get_limits()
 # Create MPC Solver
 # TODO: Select the parameter type with the argument param='P1'  - or 'P2', 'P3'
 MPC_HORIZON = 10
-ctl = MPC(model=abee,
-          dynamics=abee.model,
-          param='P3',
-          N=MPC_HORIZON,
-          ulb=-u_lim, uub=u_lim,
-          xlb=-x_lim, xub=x_lim,
-          tuning_file=tuning_file_path)
+# ctl = MPC(model=abee,
+#           dynamics=abee.model,
+#           param='P3',
+#           N=MPC_HORIZON,
+#           ulb=-u_lim, uub=u_lim,
+#           xlb=-x_lim, xub=x_lim,
+#           tuning_file=tuning_file_path)
 
 # Q2: Reference tracking
 # TODO: adjust the tuning.yaml parameters for better performance
@@ -67,10 +67,12 @@ tracking_ctl = MPC(model=abee,
 sim_env_tracking = EmbeddedSimEnvironment(model=abee,
                                           dynamics=abee.model,
                                           controller=tracking_ctl.mpc_controller,
-                                          time=80)
+                                          time=5) #80
 t, y, u = sim_env_tracking.run(x0)
 
 #tracking_ctl.set_reference(x_d_track)
+
+print("Simulation Score is: ")#,sim_env_tracking.perf_score())
 sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
 

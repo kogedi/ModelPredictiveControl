@@ -196,3 +196,54 @@ class EmbeddedSimEnvironment(object):
         ax6.grid()
 
         plt.show()
+        
+    def get_convergenc_pose_error(self,x_ref_Nt):
+        """
+        Calculate the position error at the last state as a Euklidian norm
+        :param x_ref_Nt: reference vector at last time step
+        :type v: ca.MX vector
+        """  
+        convergence_pose_error = np.linalg.norm(self.x_vec[-1,0:4],2)
+    
+        return convergence_pose_error
+
+    def get_convergence_attitude_error(self):
+        """
+        Calculate the attitude error at the last state as a Euklidian norm
+        """
+        convergence_attitude_error = np.linalg.norm(self.x_vec[-1,5:8],)
+        
+        return convergence_attitude_error
+
+    def perf_score(max_ct, avg_ct, cvg_t, ss_p, ss_a,convergence_pose_error,convergence_attitude_error):
+        """
+        Calculates a performance score depending on the given inputs
+        
+        Args:
+            max_ct (_type_): maximum computational time taken by your solver call;
+            avg_ct (_type_): average computational time taken by your solver call;
+            cvg_t (_type_): time the controller takes to converge to within 5cm of the target trajectory and 10 degrees of the desired trajectory attitude
+            ss_p (_type_): steady state position error
+            ss_a (_type_): steady state attitude error
+            convergence_pose_error (_type_): _description_
+            convergence_attitude_error (_type_): _description_
+
+        Returns:
+            _type_: Performance score
+        """
+        score = 0.0
+        score -= max(round((max_ct - 0.1) * 100, 3), 0.0) * 0.1
+        
+        # Penalize average above
+        if avg_ct > 0.1:
+            score += (0.1 - avg_ct) * 30
+        else:
+            score += max((0.1 - avg_ct), 0.0) * 5
+            
+        # Factor in convergence time
+        score += max((35.0 - cvg_t), 0.0) * 0.1
+        # Factor in steady-state errors
+        score += (convergence_pose_error - ss_p) * 100
+        score += np.rad2deg(convergence_attitude_error - ss_a) * 1
+        
+        return score
