@@ -197,13 +197,13 @@ class EmbeddedSimEnvironment(object):
 
         plt.show()
         
-    def get_convergenc_pose_error(self,x_ref_Nt):
+    def get_convergenc_pose_error(self):
         """
         Calculate the position error at the last state as a Euklidian norm
         :param x_ref_Nt: reference vector at last time step
         :type v: ca.MX vector
         """  
-        convergence_pose_error = np.linalg.norm(self.x_vec[-1,0:4],2)
+        convergence_pose_error = np.linalg.norm(self.x_vec[0:4,-1]) #-1,0:4],2)
     
         return convergence_pose_error
 
@@ -211,7 +211,7 @@ class EmbeddedSimEnvironment(object):
         """
         Calculate the attitude error at the last state as a Euklidian norm
         """
-        convergence_attitude_error = np.linalg.norm(self.x_vec[-1,5:8],)
+        convergence_attitude_error = np.linalg.norm(self.x_vec[5:8,-1]) #-1,5:8],)
         
         return convergence_attitude_error
 
@@ -247,3 +247,35 @@ class EmbeddedSimEnvironment(object):
         score += np.rad2deg(convergence_attitude_error - ss_a) * 1
         
         return score
+
+    def get_cvg_t(self, traj_dev_pos, traj_dev_att):
+        """gives back the time to reach position and attitude of interest
+
+        Args:
+            traj_dev_pos (_type_): distance in m as a reference give back the time to reach
+            traj_dev_att (_type_): distance in degree as a reference give back the time to reach
+
+        Returns:
+            _type_: time to reach both, max of both times
+        """
+        t = self.t
+        t_dist = 1000
+        t_deg = 1000
+        
+        for i in range(0, len(self.e_vec[0])):
+            distance = np.linalg.norm(self.e_vec[0:4,i],2)
+            if distance < traj_dev_pos:
+                t_dist = t[i]
+                break
+            
+        for i in range(0, len(self.e_vec[0])):
+            degree = np.rad2deg(np.linalg.norm(self.e_vec[6:9,i],2))
+            print("degree",i, " ", degree)
+            if degree < traj_dev_att:
+                t_deg = t[i]
+                break
+            
+        return max(t_dist , t_deg)
+       
+        
+    

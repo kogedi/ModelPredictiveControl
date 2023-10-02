@@ -67,22 +67,29 @@ tracking_ctl = MPC(model=abee,
 sim_env_tracking = EmbeddedSimEnvironment(model=abee,
                                           dynamics=abee.model,
                                           controller=tracking_ctl.mpc_controller,
-                                          time=5) #80
+                                          time=30) #80
 t, y, u = sim_env_tracking.run(x0)
 
 #tracking_ctl.set_reference(x_d_track)
 
-print("Simulation Score is: ")#,sim_env_tracking.perf_score())
+
 sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
 
 #Print maximum and average solvetime
 max_ct = tracking_ctl.get_max_solvetime()
 avg_ct = tracking_ctl.get_avg_solvetime()
+cvg_t = sim_env_tracking.get_cvg_t(traj_dev_pos=0.05, traj_dev_att=10)
+convergence_attitude_error = sim_env_tracking.get_convergence_attitude_error()
+convergenc_pose_error = sim_env_tracking.get_convergenc_pose_error()
 
 
 print("Average cpu time to solve =" ,avg_ct)
 print("Maximum cpu time to solve =", max_ct)
+print("Time to converge to solve cvg_t=", cvg_t)
+
+#print("Simulation Score is: ",sim_env_tracking.perf_score(avg_ct, max_ct, cvg_t, convergenc_pose_error, convergence_attitude_error))
+
 # Test 3: Activate forward propagation
 # TODO: complete the MPC Astrobee class to be ready for forward propagation
 abee.test_forward_propagation()
