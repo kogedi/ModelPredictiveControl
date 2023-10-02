@@ -9,7 +9,7 @@ import getpass
 # Get the username of the currently logged-in user
 username = getpass.getuser()
 
-print("Username:", username)
+#print("Username:", username)
 #Set the path to the trajectory file:
 #complete the 'tuning_file_path' variable to the path of your tuning.yaml
 
@@ -70,6 +70,7 @@ t, y, u = sim_env_tracking.run(x0)
 
 #tracking_ctl.set_reference(x_d_track)
 
+print("Simulation Score is: ")#,sim_env_tracking.perf_score())
 sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
 

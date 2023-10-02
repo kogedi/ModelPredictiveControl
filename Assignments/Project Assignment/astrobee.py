@@ -167,7 +167,7 @@ class Astrobee(object):
             
             
        
-        print(x_r)
+        #print(x_r)
         return x_r
 
     def get_trajectory(self, t, npoints, forward_propagation=False):
