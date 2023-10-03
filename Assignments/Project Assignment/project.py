@@ -35,7 +35,7 @@ u_lim, x_lim = abee.get_limits()
 
 # Create MPC Solver
 # TODO: Select the parameter type with the argument param='P1'  - or 'P2', 'P3'
-MPC_HORIZON = 10
+MPC_HORIZON = 8
 ctl = MPC(model=abee,
           dynamics=abee.model,
           param='P2',
@@ -54,16 +54,18 @@ sim_env = EmbeddedSimEnvironment(model=abee,
                                  dynamics=abee.model,
                                  controller=ctl.mpc_controller,
                                  time=80)
-#t, y, u = sim_env.run(x0)
-#sim_env.visualize()  # Visualize state propagation
+t, y, u = sim_env.run(x0)
+sim_env.visualize()  # Visualize state propagation
 
 # Q3: Activate Tracking
 # TODO: complete the MPC class for reference tracking
 
 #'''''''''''''''''
 # Chose different parameter options
-paramChoice  = 'P3'
+paramChoice  = 'P4'
 #'''''''''''''''''
+mpc_solverops = {} #dictionary
+mpc_solverops['ipopt.tol'] = 1e-3
 tracking_ctl = MPC(model=abee,
                    dynamics=abee.model,
                    param=paramChoice,
@@ -71,17 +73,23 @@ tracking_ctl = MPC(model=abee,
                    trajectory_tracking=True,
                    ulb=-u_lim, uub=u_lim,
                    xlb=-x_lim, xub=x_lim,
-                   tuning_file=tuning_file_path)
+                   tuning_file=tuning_file_path,solver_opts=mpc_solverops)
 sim_env_tracking = EmbeddedSimEnvironment(model=abee,
                                           dynamics=abee.model,
                                           controller=tracking_ctl.mpc_controller,
-                                          time=30) #80
+                                          time=80)
 t, y, u = sim_env_tracking.run(x0)
-
-#tracking_ctl.set_reference(x_d_track)
 
 
 sim_env_tracking.visualize()  # Visualize state propagation
+sim_env_tracking.visualize_error()
+
+# Test 3: Activate forward propagation
+# TODO: complete the MPC Astrobee class to be ready for forward propagation
+abee.test_forward_propagation()
+tracking_ctl.set_forward_propagation()
+t, y, u = sim_env_tracking.run(x0)
+# sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
 
 #Print maximum and average solvetime
@@ -93,20 +101,12 @@ convergenc_pose_error = sim_env_tracking.get_convergenc_pose_error()
 perscore = sim_env_tracking.perf_score(avg_ct, max_ct, cvg_t, convergenc_pose_error, convergence_attitude_error)
 
 print("********************************************************")
-print("****** Results for Parameters",paramChoice,"******")
+print("** Parameters",paramChoice,"MPC_HORIZON:",MPC_HORIZON,"mpc_solverops:", mpc_solverops['ipopt.tol'],"**")
 print("Average cpu time to solve avg_ct = " ,round(avg_ct,4))
 print("Maximum cpu time to solve max_ct = ", round(max_ct,4))
 print("Time to converge to solve cvg_t = ", round(cvg_t,4))
 print("The convergence_attitude_error = ", round(convergence_attitude_error,4))
 print("The convergenc_pose_error = ", round(convergenc_pose_error,4))
+#print("********************************************************")
+#print("Performance Score for", paramChoice,"is: ", round(perscore,4))
 print("********************************************************")
-print("Performance Score for", paramChoice,"is: ", round(perscore,4))
-print("********************************************************")
-
-# Test 3: Activate forward propagation
-# TODO: complete the MPC Astrobee class to be ready for forward propagation
-abee.test_forward_propagation()
-tracking_ctl.set_forward_propagation()
-t, y, u = sim_env_tracking.run(x0)
-# sim_env_tracking.visualize()  # Visualize state propagation
-sim_env_tracking.visualize_error()

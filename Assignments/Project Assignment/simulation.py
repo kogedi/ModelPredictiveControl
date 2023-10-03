@@ -203,7 +203,7 @@ class EmbeddedSimEnvironment(object):
         :param x_ref_Nt: reference vector at last time step
         :type v: ca.MX vector
         """  
-        convergence_pose_error = np.linalg.norm(self.x_vec[0:4,-1]) #-1,0:4],2)
+        convergence_pose_error = np.linalg.norm(self.e_vec[0:4,-1]) #-1,0:4],2)
     
         return convergence_pose_error
 
@@ -211,7 +211,7 @@ class EmbeddedSimEnvironment(object):
         """
         Calculate the attitude error at the last state as a Euklidian norm
         """
-        convergence_attitude_error = np.linalg.norm(self.x_vec[5:8,-1]) #-1,5:8],)
+        convergence_attitude_error = np.linalg.norm(self.e_vec[5:8,-1]) #-1,5:8],)
         
         return convergence_attitude_error
 
@@ -236,15 +236,15 @@ class EmbeddedSimEnvironment(object):
         
         # Penalize average above
         if avg_ct > 0.1:
-            score += (0.1 - avg_ct) * 30
+            score += (0.1 - avg_ct) * 30 # plus is good
         else:
-            score += max((0.1 - avg_ct), 0.0) * 5
+            score += max((0.1 - avg_ct), 0.0) * 5 # avg_ct high is good --> increase score.
             
         # Factor in convergence time
-        score += max((35.0 - cvg_t), 0.0) * 0.1
+        score += max((35.0 - cvg_t), 0.0) * 0.1 #plus is good
         # Factor in steady-state errors
-        score += (convergence_pose_error) * 100
-        score += np.rad2deg(convergence_attitude_error) * 1
+        score += (-convergence_pose_error) * 100 # - ss_p
+        score += np.rad2deg(-convergence_attitude_error) * 1 # - ss_a
         
         return score
 

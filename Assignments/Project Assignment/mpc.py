@@ -219,7 +219,7 @@ class MPC(object):
         :type param: string
         """
 
-        if param not in ['P1', 'P2', 'P3']:
+        if param not in ['P1', 'P2', 'P3','P4','P5','P6']:
             print("Wrong param option. Select param='P1' or 'P2' or 'P3'.")
             exit()
 
