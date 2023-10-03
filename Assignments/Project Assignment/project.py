@@ -59,9 +59,14 @@ sim_env = EmbeddedSimEnvironment(model=abee,
 
 # Q3: Activate Tracking
 # TODO: complete the MPC class for reference tracking
+
+#'''''''''''''''''
+# Chose different parameter options
+paramChoice  = 'P3'
+#'''''''''''''''''
 tracking_ctl = MPC(model=abee,
                    dynamics=abee.model,
-                   param='P1',
+                   param=paramChoice,
                    N=MPC_HORIZON,
                    trajectory_tracking=True,
                    ulb=-u_lim, uub=u_lim,
@@ -88,13 +93,14 @@ convergenc_pose_error = sim_env_tracking.get_convergenc_pose_error()
 perscore = sim_env_tracking.perf_score(avg_ct, max_ct, cvg_t, convergenc_pose_error, convergence_attitude_error)
 
 print("********************************************************")
+print("****** Results for Parameters",paramChoice,"******")
 print("Average cpu time to solve avg_ct = " ,round(avg_ct,4))
 print("Maximum cpu time to solve max_ct = ", round(max_ct,4))
 print("Time to converge to solve cvg_t = ", round(cvg_t,4))
 print("The convergence_attitude_error = ", round(convergence_attitude_error,4))
 print("The convergenc_pose_error = ", round(convergenc_pose_error,4))
 print("********************************************************")
-print("Performance Score is: ", round(perscore,4))
+print("Performance Score for", paramChoice,"is: ", round(perscore,4))
 print("********************************************************")
 
 # Test 3: Activate forward propagation
