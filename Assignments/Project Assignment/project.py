@@ -85,13 +85,17 @@ avg_ct = tracking_ctl.get_avg_solvetime()
 cvg_t = sim_env_tracking.get_cvg_t(traj_dev_pos=0.05, traj_dev_att=10)
 convergence_attitude_error = sim_env_tracking.get_convergence_attitude_error()
 convergenc_pose_error = sim_env_tracking.get_convergenc_pose_error()
+perscore = sim_env_tracking.perf_score(avg_ct, max_ct, cvg_t, convergenc_pose_error, convergence_attitude_error)
 
-
-print("Average cpu time to solve =" ,avg_ct)
-print("Maximum cpu time to solve =", max_ct)
-print("Time to converge to solve cvg_t=", cvg_t)
-
-#print("Simulation Score is: ",sim_env_tracking.perf_score(avg_ct, max_ct, cvg_t, convergenc_pose_error, convergence_attitude_error))
+print("********************************************************")
+print("Average cpu time to solve avg_ct = " ,round(avg_ct,4))
+print("Maximum cpu time to solve max_ct = ", round(max_ct,4))
+print("Time to converge to solve cvg_t = ", round(cvg_t,4))
+print("The convergence_attitude_error = ", round(convergence_attitude_error,4))
+print("The convergenc_pose_error = ", round(convergenc_pose_error,4))
+print("********************************************************")
+print("Performance Score is: ", round(perscore,4))
+print("********************************************************")
 
 # Test 3: Activate forward propagation
 # TODO: complete the MPC Astrobee class to be ready for forward propagation

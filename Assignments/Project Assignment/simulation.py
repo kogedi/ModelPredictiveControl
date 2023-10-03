@@ -215,7 +215,7 @@ class EmbeddedSimEnvironment(object):
         
         return convergence_attitude_error
 
-    def perf_score(max_ct, avg_ct, cvg_t, ss_p, ss_a,convergence_pose_error,convergence_attitude_error):
+    def perf_score(self, max_ct, avg_ct, cvg_t, convergence_pose_error, convergence_attitude_error):
         """
         Calculates a performance score depending on the given inputs
         
@@ -223,8 +223,8 @@ class EmbeddedSimEnvironment(object):
             max_ct (_type_): maximum computational time taken by your solver call;
             avg_ct (_type_): average computational time taken by your solver call;
             cvg_t (_type_): time the controller takes to converge to within 5cm of the target trajectory and 10 degrees of the desired trajectory attitude
-            ss_p (_type_): steady state position error
-            ss_a (_type_): steady state attitude error
+            ss_p (_type_): steady state position error # not used
+            ss_a (_type_): steady state attitude error # not used
             convergence_pose_error (_type_): _description_
             convergence_attitude_error (_type_): _description_
 
@@ -243,8 +243,8 @@ class EmbeddedSimEnvironment(object):
         # Factor in convergence time
         score += max((35.0 - cvg_t), 0.0) * 0.1
         # Factor in steady-state errors
-        score += (convergence_pose_error - ss_p) * 100
-        score += np.rad2deg(convergence_attitude_error - ss_a) * 1
+        score += (convergence_pose_error) * 100
+        score += np.rad2deg(convergence_attitude_error) * 1
         
         return score
 
@@ -270,7 +270,7 @@ class EmbeddedSimEnvironment(object):
             
         for i in range(0, len(self.e_vec[0])):
             degree = np.rad2deg(np.linalg.norm(self.e_vec[6:9,i],2))
-            print("degree",i, " ", degree)
+            #print("degree",i, " ", degree)
             if degree < traj_dev_att:
                 t_deg = t[i]
                 break

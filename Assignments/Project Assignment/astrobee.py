@@ -138,7 +138,6 @@ class Astrobee(object):
         """
 
         x_r = np.zeros((self.n, npoints))
-        print(x_s)
         
         # Helper Variables
         p_temp = np.zeros((3, npoints))
