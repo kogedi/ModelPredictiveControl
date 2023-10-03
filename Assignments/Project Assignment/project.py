@@ -19,7 +19,10 @@ if username == 'Konrad Dittrich':
 elif username == 'catherine':
     trajectory_quat = '/Users/catherine/git/Model_Predictive_Control/Assignments/Project Assignment/Dataset/trajectory_quat.txt'
     tuning_file_path = '/Users/catherine/git/Model_Predictive_Control/Assignments/Project Assignment/tuning.yaml'
+else:
+    trajectory_quat = '/home/el2700/Documents/Project Assignment/Dataset/trajectory_quat.txt'
 
+    tuning_file_path = '/home/el2700/Documents/Project Assignment/tuning.yaml'
 # Q1
 # TODO: Set the Astrobee dynamics in Astrobee->astrobee_dynamics_quat
 abee = Astrobee(trajectory_file=trajectory_quat)
@@ -33,26 +36,26 @@ u_lim, x_lim = abee.get_limits()
 # Create MPC Solver
 # TODO: Select the parameter type with the argument param='P1'  - or 'P2', 'P3'
 MPC_HORIZON = 10
-# ctl = MPC(model=abee,
-#           dynamics=abee.model,
-#           param='P3',
-#           N=MPC_HORIZON,
-#           ulb=-u_lim, uub=u_lim,
-#           xlb=-x_lim, xub=x_lim,
-#           tuning_file=tuning_file_path)
+ctl = MPC(model=abee,
+          dynamics=abee.model,
+          param='P2',
+          N=MPC_HORIZON,
+          ulb=-u_lim, uub=u_lim,
+          xlb=-x_lim, xub=x_lim,
+          tuning_file=tuning_file_path)
 
 # Q2: Reference tracking
 # TODO: adjust the tuning.yaml parameters for better performance
-# x_d = abee.get_static_setpoint()
-# ctl.set_reference(x_d)
-# # Set initial state
+x_d = abee.get_static_setpoint()
+ctl.set_reference(x_d)
+# Set initial state
 x0 = abee.get_initial_pose()
-# sim_env = EmbeddedSimEnvironment(model=abee,
-#                                  dynamics=abee.model,
-#                                  controller=ctl.mpc_controller,
-#                                  time=80)
-# t, y, u = sim_env.run(x0)
-# sim_env.visualize()  # Visualize state propagation
+sim_env = EmbeddedSimEnvironment(model=abee,
+                                 dynamics=abee.model,
+                                 controller=ctl.mpc_controller,
+                                 time=80)
+#t, y, u = sim_env.run(x0)
+#sim_env.visualize()  # Visualize state propagation
 
 # Q3: Activate Tracking
 # TODO: complete the MPC class for reference tracking
@@ -94,8 +97,6 @@ print("Time to converge to solve cvg_t=", cvg_t)
 # TODO: complete the MPC Astrobee class to be ready for forward propagation
 abee.test_forward_propagation()
 tracking_ctl.set_forward_propagation()
-
 t, y, u = sim_env_tracking.run(x0)
 # sim_env_tracking.visualize()  # Visualize state propagation
 sim_env_tracking.visualize_error()
-

@@ -80,22 +80,17 @@ class Astrobee(object):
         # 3D Torque
         tau = u[3:]
 
-        # Model setup
+        # Model
         pdot = ca.MX.zeros(3, 1)
         vdot = ca.MX.zeros(3, 1)
         qdot = ca.MX.zeros(4, 1)
         wdot = ca.MX.zeros(3, 1)
-        
-        #Help variables
-        R_q = r_mat_q(q)
-        Omega_q = xi_mat(q)
-        J = self.inertia
-        
-        #Newton-Euler equations  (1)
-        pdot = v                                                              #(1a)
-        vdot = 1/self.mass * ca.mtimes(R_q, f)                                #(1b)
-        qdot = 1/2 * ca.mtimes(Omega_q, w)                                    #(1c)
-        wdot = ca.mtimes(ca.inv(J), (tau - ca.cross(( w),(ca.mtimes(J,w)))))  #(1d)
+
+        # State Equations
+        pdot = v
+        vdot = (1/self.mass)*ca.mtimes(r_mat_q(q), f)
+        qdot = 0.5*ca.mtimes(xi_mat(q), w)
+        wdot = ca.mtimes(ca.inv(self.inertia), (tau - ca.cross(w, ca.mtimes(self.inertia, w))))
 
         dxdt = [pdot, vdot, qdot, wdot]
 
@@ -130,7 +125,7 @@ class Astrobee(object):
     def forward_propagate(self, x_s, npoints, radius=0.5):
         """
         Forward propagate the observed state given a constant velocity.
-                    
+
         The output should be a self.n x npoints matrix, with the
         desired offset track.
 
@@ -143,31 +138,26 @@ class Astrobee(object):
         """
 
         x_r = np.zeros((self.n, npoints))
+        print(x_s)
         
-        #Initialization
-        
-        
-        x_r[0:3, 0] = x_s[0:3,0] #+ r_mat_q_np(x_s[6:10,0])[:,0] * radius
-        x_r[3:6, 0] = x_s[3:6,0] 
-        x_r[6:10,0] = x_s[6:10,0]
-        #print("r_mat_q_np(x_s[6:10,0])[:,0] * radius",r_mat_q_np(x_s[6:10,0])[:,0] * radius)
-        x_r[10:, 0] = x_s[10:,0]
-        p_temp =  np.zeros((3, npoints))
-        
+        # Helper Variables
+        p_temp = np.zeros((3, npoints))
+        p_temp[:, 0] = x_s[0:3].reshape((3,))
+
         # TODO: do the forward propagation of the measured state x_s for npoints.
-        for i in range(1,npoints):
-            x_r[0:3, i] = x_r[0:3, i] + x_s[3:6,0] * self.dt 
-            x_r[3:6, i] = x_s[3:6,0] 
-            x_r[6:10, i] =  np.linalg.norm(x_r[6:10,i-1] + (1/2 * np.dot(xi_mat_np(x_r[6:10,i-1]), x_s[10:,0])), 2)
-            x_r[10:, i] = x_s[10:,0]
-        
-        for i in range(npoints):
-            p_temp[0:3,i] = x_r[0:3, i] + r_mat_q_np(x_r[6:10,i])[:,0] * radius
-            x_r[0:3, i] = p_temp[:,i]
-            
-            
-       
-        #print(x_r)
+        x_r[3:6, :] = np.tile(x_s[3:6].reshape((3,1)), (1, npoints))     # Constant velocity: v
+        x_r[10:13, :] = np.tile(x_s[10:13].reshape((3,1)), (1, npoints))  # Constant angular velocity:omega
+        x_r[6:10, 0] = x_s[6:10].reshape((4, ))                # Initial quaternions: q  
+        x_r[0:3, 0] = p_temp[:,0] + r_mat_q_np(x_r[6:10, 0])[:, 0]*radius # Bumble's position
+
+        for i in range(1, npoints):
+            p_temp[0:3,i] = p_temp[:,i-1] + x_r[3:6, 0]*self.dt       # Update the position based on Euler forward scheme
+            x_r[6:10, i] = x_r[6:10, i-1] + 0.5*np.dot(xi_mat_np(x_r[6:10, i-1]),x_r[10:13, 0])*self.dt   # Update the quaternions: q  
+            x_r[0:3, i] = p_temp[:, i] + r_mat_q_np(x_r[6:10, i])[:, 0]*radius  # Compute the position of Bumble
+
+            # Normalize the quaternion
+            x_r[6:10, i] = x_r[6:10, i]/np.linalg.norm(x_r[6:10, i])
+
         return x_r
 
     def get_trajectory(self, t, npoints, forward_propagation=False):
@@ -249,7 +239,7 @@ class Astrobee(object):
         xd = np.array([11.5, 0.54, 0.4, 0.0, 0.1, 0.0, 0.11971121, 0.0, 0.0, 0.99280876, 0.1, 0.0, 0.0])
         eps = np.linalg.norm(x_r[:, 24] - xd)
         if eps > 1e-2:
-            print("test_forwardpropagation: Forward propagation has a large error. Double check your dynamics.")
+            print("Forward propagation has a large error. Double check your dynamics.")
             exit()
 
     def test_dynamics(self):
@@ -265,5 +255,5 @@ class Astrobee(object):
         xt = self.model(x0, u0)
         eps = np.linalg.norm(np.array(xt) - xd)
         if eps > 1e-4:
-            print("test_dynamics: Forward propagation has a large error. Double check your dynamics.")
+            print("Forward propagation has a large error. Double check your dynamics.")
             exit()
