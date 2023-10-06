@@ -20,15 +20,16 @@ A, B, _, _ = abee.create_discrete_time_dynamics()
 Q = np.eye(12)
 
 #Q_diag = np.vstack((np.ones((3, 1)),np.ones((3, 1)) * 100, np.ones((3, 1)),np.ones((3, 1))*100))
+Q_diag = np.vstack((np.ones((3, 1))*100,np.ones((3, 1)), np.ones((3, 1))*100,np.ones((3, 1))))
 
-#Q_diag = np.vstack((np.ones((3, 1))*100,np.ones((3, 1)), np.ones((3, 1))*100,np.ones((3, 1))))
-#Q_diag = np.vstack((np.ones((3, 1))*25,np.ones((3, 1)), np.ones((3, 1))*25,np.ones((3, 1))))
-#Q= np.diag(Q_diag.reshape(12, ))
+Q= np.diag(Q_diag.reshape(12, ))
 Q = 100* np.eye(12)
 
 print("Q",Q)
 
-R = 10 * np.eye(6) * 0.01
+R = np.eye(6) #* 0.01
+print("R",R)
+
 P_LQR = np.matrix(scipy.linalg.solve_discrete_are(A, B, Q, R))
 
 # Instantiate controller
