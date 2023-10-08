@@ -52,10 +52,10 @@ class System:
 
         self._x.append(self.x0)
         self._u.append(u)
-        y = self.C@self.x0+self.D@u
+        y = self.C@self.x0#+self.D@u
         self._y.append(y)
         self._time.append(self.t_now)
-
+            
         self.x0 = self.A@self.x0 + self.B@u
 
         self.t_now += self.dt
@@ -66,7 +66,8 @@ class System:
         if x0 is not None:
             self.x0 = x0
         else:
-            self.x0 = np.zeros((8,1))
+            self.x0 = np.zeros((self.n_x,1))
+            #print("self.x0",self.x0)
 
         self._x = []
         self._u = []
