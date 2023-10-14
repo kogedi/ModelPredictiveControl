@@ -55,7 +55,7 @@ class System:
         y = self.C@self.x0#+self.D@u
         self._y.append(y)
         self._time.append(self.t_now)
-            
+ 
         self.x0 = self.A@self.x0 + self.B@u
 
         self.t_now += self.dt
