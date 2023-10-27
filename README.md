@@ -2,9 +2,9 @@
 
 Assignments for Lecture Model Predictive Control
 
-## Assignment 1: State Feedback Control Design
-## Assignment 2: Finite-Time Optimal Control
-## Assignment 3: Linear Quadrativ and Gaussian Regulators
-## Assignment 4: Model Predictive Control
-## Project: Nonlinear MPC Approaches
-## Paper Project: Fork of Data-Enabled Predictive Control: In the Shallows of DeePC by Jeremy Coulson et al.
+1. Assignment 1: State Feedback Control Design
+2. Assignment 2: Finite-Time Optimal Control
+3. Assignment 3: Linear Quadrativ and Gaussian Regulators
+4. Assignment 4: Model Predictive Control
+5. Project: Nonlinear MPC Approaches
+6. Paper Project: Fork of Data-Enabled Predictive Control: In the Shallows of DeePC by Jeremy Coulson et al.
